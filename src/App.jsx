@@ -17,6 +17,7 @@ import Login from './pages/Login';
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
 import CookieMenu from './pages/CookieMenu';
+import GiftBoxes from './pages/GiftBoxes';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path="/place-order" element={<Checkout />} />
           <Route path="/order-success" element={<OrderSuccess />} />
           <Route path="/cookies" element={<CookieMenu />} />
+          <Route path="/gift-boxes" element={<GiftBoxes />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

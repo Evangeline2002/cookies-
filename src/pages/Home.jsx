@@ -34,8 +34,10 @@ export default function Home() {
     return (
         <main className="min-h-screen overflow-hidden">
             <SEO
-                title="Cookie Heaven | Premium Handmade Cookies Online"
-                description="Order premium handmade cookies freshly baked and delivered. Perfect for gifting, events, or a sweet treat. Try our best-selling chocolate chip cookies today!"
+                title="Cookie Heaven | Freshly Baked Premium Cookies"
+                description="Discover freshly baked cookies made with premium ingredients. Shop chocolate chip, double chocolate, butter cookies, brownies, and more with fast delivery."
+                keywords="Cookie Heaven, Fresh Cookies, Premium Cookies, Chocolate Chip Cookies, Buy Cookies Online, Bakery"
+                canonical="https://www.cookieheaven.com/"
             />
 
             {/* 1. Hero Banner */}
@@ -103,7 +105,8 @@ export default function Home() {
                                     animate={{ opacity: i === currentSlide ? 1 : 0 }}
                                     transition={{ duration: 0.7, ease: 'easeInOut' }}
                                     className="absolute inset-0 w-full h-full object-cover rounded-[3rem] drop-shadow-2xl"
-                                    alt={`Cookie display ${i + 1}`}
+                                    alt={`Freshly baked cookies ${i + 1}`}
+                                    loading="eager"
                                 />
                             ))}
                         </div>
@@ -112,11 +115,10 @@ export default function Home() {
                                 <button
                                     key={i}
                                     onClick={() => setCurrentSlide(i)}
-                                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                                        i === currentSlide
-                                            ? 'bg-[var(--color-primary)] w-8'
-                                            : 'bg-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/50'
-                                    }`}
+                                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${i === currentSlide
+                                        ? 'bg-[var(--color-primary)] w-8'
+                                        : 'bg-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/50'
+                                        }`}
                                     aria-label={`Go to slide ${i + 1}`}
                                 />
                             ))}
@@ -134,20 +136,25 @@ export default function Home() {
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 max-w-6xl mx-auto">
-                        {['Chocolate Chip', 'Healthy & Vegan', 'Premium Gift Boxes', 'Assorted Combos'].map((cat, i) => (
+                        {[
+                            { label: 'Chocolate Chip', emoji: '🍪', to: '/shop' },
+                            { label: 'Healthy & Vegan', emoji: '🌱', to: '/shop?type=healthy' },
+                            { label: 'Premium Gift Boxes', emoji: '🎁', to: '/gift-boxes' },
+                            { label: 'Assorted Combos', emoji: '📦', to: '/shop' },
+                        ].map((cat, i) => (
                             <motion.div
-                                key={cat}
+                                key={cat.label}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-50px" }}
                                 transition={{ delay: i * 0.1 }}
                             >
-                                <Link to="/shop" className="group block h-full">
+                                <Link to={cat.to} className="group block h-full">
                                     <div className="bg-[var(--color-background)] rounded-3xl p-6 md:p-8 text-center h-full flex flex-col items-center justify-center gap-4 border border-[var(--color-primary)]/10 hover:border-[var(--color-primary)]/40 hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-2">
                                         <span className="text-5xl md:text-6xl group-hover:scale-110 transition-transform duration-300">
-                                            {['🍪', '🌱', '🎁', '📦'][i]}
+                                            {cat.emoji}
                                         </span>
-                                        <h3 className="font-bold text-gray-800 text-lg leading-snug">{cat}</h3>
+                                        <h3 className="font-bold text-gray-800 text-lg leading-snug">{cat.label}</h3>
                                         <span className="text-[var(--color-secondary)] font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
                                             View All <FiArrowRight />
                                         </span>
@@ -189,7 +196,7 @@ export default function Home() {
 
                                 <div className="bg-[var(--color-background)] rounded-2xl h-48 mb-6 flex items-center justify-center text-7xl group-hover:scale-110 transition-transform duration-500 overflow-hidden relative">
                                     {product.img ? (
-                                        <img src={product.img} alt={product.name} className="w-full h-full object-cover !scale-100" />
+                                        <img src={product.img} alt={`${product.name} cookie`} loading="lazy" className="w-full h-full object-cover !scale-100" />
                                     ) : (
                                         product.emoji
                                     )}
@@ -257,6 +264,16 @@ export default function Home() {
                         ))}
                     </div>
                 </div>
+            </section>
+
+            {/* Hidden SEO content */}
+            <section className="sr-only">
+                <h2>Freshly Baked Cookies Online</h2>
+                <p>
+                    Cookie Heaven offers freshly baked cookies made with premium ingredients.
+                    Enjoy chocolate chip cookies, double chocolate cookies, butter cookies,
+                    brownies, and delicious treats delivered fresh to your doorstep.
+                </p>
             </section>
 
         </main>

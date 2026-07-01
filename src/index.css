@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@import "react-toastify/dist/ReactToastify.css";
+
+@theme {
+  --color-primary: #8B4513;
+  --color-secondary: #D2691E;
+  --color-accent: #F59E0B;
+  --color-background: #FFFDF8;
+  --color-text: #2D2D2D;
+
+  --font-sans: "Poppins", sans-serif;
+
+  --color-primary-dark: #6e350d;
+  --color-secondary-dark: #b85b19;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 font-semibold rounded-full transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)] shadow-[0_4px_14px_#8B45134D];
+  }
+
+  .btn-secondary {
+    @apply bg-[var(--color-secondary)] text-white hover:bg-[var(--color-secondary-dark)] shadow-[0_4px_14px_#D2691E4D];
+  }
+
+  .btn-outline {
+    @apply border-2 border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-5xl font-bold text-[var(--color-primary)] mb-4;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-[var(--color-text)] opacity-80 max-w-2xl mx-auto;
+  }
+}
+
+/* Hide scrollbar for clean UI but allow scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}

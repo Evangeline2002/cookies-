@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import { FiPhone, FiLock, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi';
+import { FiMail, FiLock, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 import logoImg from '../assets/logo.webp';
 import loginImg from '../assets/login.jpg';
@@ -25,13 +25,13 @@ export default function Login() {
     const navigate = useNavigate();
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: { phone: '', password: '', remember: false }
+        defaultValues: { email: '', password: '', remember: false }
     });
 
     const onSubmit = (data) => {
         setLoading(true);
         setTimeout(() => {
-            login('User', data.phone);
+            login(data.email.split('@')[0], data.email);
             toast.success(
                 <div>
                     <div className="font-semibold text-gray-900">Login Successful!</div>
@@ -103,31 +103,31 @@ export default function Login() {
 
                     {/* Form */}
                     <motion.form variants={itemVariants} onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
-                        {/* Phone */}
+                        {/* Email */}
                         <div>
-                            <label htmlFor="phone" className="block text-sm font-semibold mb-2" style={{ color: '#4A4A4A' }}>
-                                Phone Number
+                            <label htmlFor="email" className="block text-sm font-semibold mb-2" style={{ color: '#4A4A4A' }}>
+                                Email Address
                             </label>
                             <div className="relative">
-                                <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2" size={18}
-                                    style={{ color: errors.phone ? '#EF4444' : '#9CA3AF' }} />
+                                <FiMail className="absolute left-4 top-1/2 -translate-y-1/2" size={18}
+                                    style={{ color: errors.email ? '#EF4444' : '#9CA3AF' }} />
                                 <input
-                                    id="phone" type="tel" autoComplete="tel"
-                                    aria-label="Phone Number" aria-invalid={errors.phone ? 'true' : 'false'}
-                                    {...register('phone', {
-                                        required: 'Phone number is required.',
-                                        pattern: { value: /^\d{10}$/, message: 'Phone number must contain exactly 10 digits.' }
+                                    id="email" type="email" autoComplete="email"
+                                    aria-label="Email Address" aria-invalid={errors.email ? 'true' : 'false'}
+                                    {...register('email', {
+                                        required: 'Email is required.',
+                                        pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Please enter a valid email address.' }
                                     })}
-                                    placeholder="Enter your phone number"
+                                    placeholder="Enter your email"
                                     className={`w-full pl-12 pr-4 py-3.5 rounded-2xl border-2 transition-all outline-none text-sm
-                                        ${errors.phone ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50 focus:bg-white focus:border-[#8B4513]'}`}
+                                        ${errors.email ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50 focus:bg-white focus:border-[#8B4513]'}`}
                                     style={{ color: '#2D2D2D' }}
                                 />
                             </div>
-                            {errors.phone && (
+                            {errors.email && (
                                 <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }}
                                     className="text-red-500 text-xs mt-1.5 ml-1 font-medium" role="alert">
-                                    {errors.phone.message}
+                                    {errors.email.message}
                                 </motion.p>
                             )}
                         </div>

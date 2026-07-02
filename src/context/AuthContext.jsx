@@ -2,21 +2,46 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-    const [user, setUser] = useState(() => {
-        try {
-            const saved = localStorage.getItem('ch_user');
-            return saved ? JSON.parse(saved) : null;
-        } catch {
-            return null;
+function getStoredUser() {
+    try {
+        const chUser = localStorage.getItem('ch_user');
+        if (chUser) return JSON.parse(chUser);
+
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const email = localStorage.getItem('email');
+        const phone = localStorage.getItem('phone');
+        const isVerified = localStorage.getItem('isVerified') === 'true';
+        if (isLoggedIn && email && isVerified) {
+            return { email, phone, isVerified, loginMethod: 'email', loggedInAt: Date.now() };
         }
-    });
+    } catch { }
+    return null;
+}
+
+export function AuthProvider({ children }) {
+    const [user, setUser] = useState(getStoredUser);
 
     useEffect(() => {
         if (user) {
-            localStorage.setItem('ch_user', JSON.stringify(user));
+            if (user.loginMethod === 'email') {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('email', (user.email || ''));
+                localStorage.setItem('phone', (user.phone || ''));
+                localStorage.setItem('isVerified', 'true');
+                localStorage.removeItem('ch_user');
+            } else {
+                localStorage.setItem('ch_user', JSON.stringify(user));
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('email');
+                localStorage.removeItem('phone');
+                localStorage.removeItem('isVerified');
+            }
         } else {
             localStorage.removeItem('ch_user');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('email');
+            localStorage.removeItem('phone');
+            localStorage.removeItem('isVerified');
         }
     }, [user]);
 
@@ -26,10 +51,40 @@ export function AuthProvider({ children }) {
         return userData;
     };
 
+    const loginWithGoogle = (googleUserData) => {
+        const userData = {
+            ...googleUserData,
+            loggedInAt: Date.now(),
+            isGoogleSign: true
+        };
+        setUser(userData);
+        return userData;
+    };
+
+    const loginWithEmail = (email, phone) => {
+        setUser({ email, phone, isVerified: false, loginMethod: 'email', loggedInAt: Date.now() });
+    };
+
+    const verifyEmail = () => {
+        setUser(prev => prev ? { ...prev, isVerified: true } : null);
+    };
+
     const logout = () => setUser(null);
 
+    const isLoggedIn = !!user && (user.loginMethod !== 'email' || user.isVerified);
+
     return (
-        <AuthContext.Provider value={{ user, isLoggedIn: !!user, login, logout }}>
+        <AuthContext.Provider value={{
+            user,
+            isLoggedIn,
+            email: user?.email || null,
+            isVerified: user?.isVerified || false,
+            login,
+            loginWithGoogle,
+            loginWithEmail,
+            verifyEmail,
+            logout
+        }}>
             {children}
         </AuthContext.Provider>
     );

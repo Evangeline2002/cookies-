@@ -114,9 +114,32 @@ export default function Navbar({ onCartClick }) {
 
                         {/* Actions */}
                         <div className="flex items-center gap-2 md:gap-4">
-                            <Link to="/login" className="hidden md:flex items-center gap-2 font-semibold text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors p-2">
-                                <FiUser size={20} /> <span className="hidden xl:inline">Login</span>
-                            </Link>
+                            {isLoggedIn && user ? (
+                                <div className="hidden md:flex items-center gap-3 mr-2 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full shadow-sm">
+                                    {user.picture ? (
+                                        <img src={user.picture} alt={user.name || user.email} className="w-7 h-7 rounded-full object-cover border border-white shadow-sm" />
+                                    ) : (
+                                        <div className="w-7 h-7 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-xs font-bold font-['Poppins'] shadow-sm">
+                                            {(user.name || user.email)?.charAt(0)?.toUpperCase()}
+                                        </div>
+                                    )}
+                                    <span className="text-sm font-semibold text-gray-700 hidden lg:block">
+                                        {user.loginMethod === 'email' ? user.email : `Welcome, ${user.name}`}
+                                    </span>
+                                    <button
+                                        onClick={() => {
+                                            logout();
+                                        }}
+                                        className="text-xs font-medium text-red-500 hover:text-red-700 ml-1 transition-colors hover:underline"
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
+                            ) : (
+                                <Link to="/login" className="hidden md:flex items-center gap-2 font-semibold text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors p-2">
+                                    <FiUser size={20} /> <span className="hidden xl:inline">Login</span>
+                                </Link>
+                            )}
 
                             <button
                                 onClick={onCartClick}
@@ -197,9 +220,36 @@ export default function Navbar({ onCartClick }) {
                             </div>
 
                             <div className="p-6 bg-[var(--color-background)] border-t border-[var(--color-primary)]/10 space-y-4">
-                                <Link to="/login" className="flex items-center justify-center gap-2 w-full px-6 py-3 font-bold text-[var(--color-primary)] bg-white border border-[var(--color-primary)] rounded-full text-center">
-                                    <FiUser /> Login / Register
-                                </Link>
+                                {isLoggedIn && user ? (
+                                    <div className="flex flex-col gap-3 mb-4 p-4 bg-white rounded-2xl shadow-sm border border-gray-100">
+                                        <div className="flex items-center gap-3">
+                                            {user.picture ? (
+                                                <img src={user.picture} alt={user.name || user.email} className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" />
+                                            ) : (
+                                                <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                                                    {(user.name || user.email)?.charAt(0)?.toUpperCase()}
+                                                </div>
+                                            )}
+                                            <div>
+                                                <p className="text-xs text-gray-500 font-medium tracking-wide uppercase">Welcome back</p>
+                                                <p className="font-semibold text-gray-800 line-clamp-1">{user.loginMethod === 'email' ? user.email : user.name}</p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={() => {
+                                                logout();
+                                                setMobileMenuOpen(false);
+                                            }}
+                                            className="w-full py-2.5 text-sm font-semibold text-red-50 bg-red-500 hover:bg-red-600 active:bg-red-700 rounded-xl transition-colors mt-1"
+                                        >
+                                            Sign Out
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <Link to="/login" className="flex items-center justify-center gap-2 w-full px-6 py-3 font-bold text-[var(--color-primary)] bg-white border border-[var(--color-primary)] rounded-full text-center hover:bg-gray-50 active:scale-[0.98] transition-all">
+                                        <FiUser /> Login / Register
+                                    </Link>
+                                )}
                                 <Link to="/shop" className="btn btn-primary w-full flex justify-center shadow-none">
                                     Order Now
                                 </Link>

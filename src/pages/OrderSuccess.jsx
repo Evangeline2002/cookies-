@@ -3,10 +3,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiShoppingBag, FiClock, FiHash, FiCheckCircle, FiArrowRight } from 'react-icons/fi';
 import SEO from '../components/SEO';
+import { useAuth } from '../context/AuthContext';
 
 export default function OrderSuccess() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const orderData = useRef(location.state || {}).current;
 
   useEffect(() => {
@@ -47,6 +49,14 @@ export default function OrderSuccess() {
         </p>
 
         <div className="rounded-2xl p-5 mb-8 text-left space-y-3" style={{ backgroundColor: '#FFF8F2' }}>
+
+          {user?.email && (
+            <div className="p-4 bg-green-50 border border-green-200 rounded-xl mb-4 text-center">
+              <p className="text-sm font-bold text-green-700 mb-1 flex justify-center items-center gap-2"><FiCheckCircle /> Invoice Dispatched!</p>
+              <p className="text-xs text-green-700 font-medium leading-relaxed">Copies of this receipt have been emailed to <b>{user.email}</b> and texted to <b>{user.phone || 'your registered number'}</b>.</p>
+            </div>
+          )}
+
           <div className="flex items-center gap-3 text-sm">
             <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#FEF3C7' }}>
               <FiClock className="text-amber-600" size={16} />

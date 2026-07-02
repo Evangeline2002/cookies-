@@ -9,10 +9,9 @@ function getStoredUser() {
 
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         const email = localStorage.getItem('email');
-        const phone = localStorage.getItem('phone');
         const isVerified = localStorage.getItem('isVerified') === 'true';
         if (isLoggedIn && email && isVerified) {
-            return { email, phone, isVerified, loginMethod: 'email', loggedInAt: Date.now() };
+            return { email, isVerified, loginMethod: 'email', loggedInAt: Date.now() };
         }
     } catch { }
     return null;
@@ -25,22 +24,19 @@ export function AuthProvider({ children }) {
         if (user) {
             if (user.loginMethod === 'email') {
                 localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('email', (user.email || ''));
-                localStorage.setItem('phone', (user.phone || ''));
+                localStorage.setItem('email', user.email);
                 localStorage.setItem('isVerified', 'true');
                 localStorage.removeItem('ch_user');
             } else {
                 localStorage.setItem('ch_user', JSON.stringify(user));
                 localStorage.removeItem('isLoggedIn');
                 localStorage.removeItem('email');
-                localStorage.removeItem('phone');
                 localStorage.removeItem('isVerified');
             }
         } else {
             localStorage.removeItem('ch_user');
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('email');
-            localStorage.removeItem('phone');
             localStorage.removeItem('isVerified');
         }
     }, [user]);
@@ -61,8 +57,8 @@ export function AuthProvider({ children }) {
         return userData;
     };
 
-    const loginWithEmail = (email, phone) => {
-        setUser({ email, phone, isVerified: false, loginMethod: 'email', loggedInAt: Date.now() });
+    const loginWithEmail = (email) => {
+        setUser({ email, isVerified: false, loginMethod: 'email', loggedInAt: Date.now() });
     };
 
     const verifyEmail = () => {

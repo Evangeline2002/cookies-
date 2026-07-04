@@ -21,6 +21,20 @@ import CookieMenu from './pages/CookieMenu';
 import GiftBoxes from './pages/GiftBoxes';
 import Recipes from './pages/Recipes';
 import NotFound from './pages/NotFound';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminLayout from './pages/admin/AdminLayout';
+import Dashboard from './pages/admin/Dashboard';
+import AdminProducts from './pages/admin/Products';
+import AdminCategories from './pages/admin/Categories';
+import AdminOrders from './pages/admin/Orders';
+import AdminCustomers from './pages/admin/Customers';
+import AdminRecipes from './pages/admin/Recipes';
+import AdminGiftBoxes from './pages/admin/GiftBoxes';
+import AdminReviews from './pages/admin/Reviews';
+import AdminSettings from './pages/admin/Settings';
+import AdminAnalytics from './pages/admin/Analytics';
+import AdminSEOSettings from './pages/admin/SEOSettings';
+import AdminProfile from './pages/admin/AdminProfile';
 
 function App() {
   const { isCartOpen, setIsCartOpen } = useCart();
@@ -51,6 +65,23 @@ function App() {
           <Route path="/order-success" element={<OrderSuccess />} />
           <Route path="/cookies" element={<CookieMenu />} />
           <Route path="/gift-boxes" element={<GiftBoxes />} />
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="categories" element={<AdminCategories />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="customers" element={<AdminCustomers />} />
+            <Route path="recipes" element={<AdminRecipes />} />
+            <Route path="gift-boxes" element={<AdminGiftBoxes />} />
+            <Route path="reviews" element={<AdminReviews />} />
+            <Route path="analytics" element={<AdminAnalytics />} />
+            <Route path="seo" element={<AdminSEOSettings />} />
+            <Route path="profile" element={<AdminProfile />} />
+            <Route path="website-settings" element={<AdminSettings />} />
+            <Route path="settings" element={<AdminSettings />} />
+            <Route index element={<Dashboard />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
